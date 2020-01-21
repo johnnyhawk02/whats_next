@@ -63,43 +63,52 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //Aac aac = Aac();
     SystemChrome.setEnabledSystemUIOverlays([]);
+    final pages = List<Widget>.generate(
+      4,
+          (i) {
+        return Container(
+          color: Colors.black,
+          child: Flex(
+            direction: Axis.vertical,
+            children: <Widget>[
+              Flexible(
+                flex: 7,
+                fit: FlexFit.loose,
+                child: ImageView(
+                  currentImageIndex: currentImageIndex,
+                  categoryIndex: i,
+                  aac: aac,
+                ),
+              ),
+              Flexible(
+                flex: 4,
+                fit: FlexFit.loose,
+                child: AacGridView(
+                  aac: aac,
+                  categoryIndex: i,
+                  speak: _speak,
+                  setCurrentImageIndex: setCurrentImageIndex,
+                  currentImageIndex: currentImageIndex,
+                ),
+              ),
+//              Flexible(
+//                flex: 1,
+//                child: CategoryView(
+//                    aac: aac,
+//                    setCategory: setCategory,
+//                    setCurrentImageIndex: setCurrentImageIndex,
+//                    categoryIndex: _categoryIndex),
+//              ),
+            ],
+          ),
+        );
+          },
+    );
 
     return Material(
-      child: Container(
-        color: Colors.black,
-        child: Flex(
-          direction: Axis.vertical,
-          children: <Widget>[
-            Flexible(
-              flex: 7,
-              fit: FlexFit.loose,
-              child: ImageView(
-                currentImageIndex: currentImageIndex,
-                categoryIndex: _categoryIndex,
-                aac: aac,
-              ),
-            ),
-            Flexible(
-              flex: 4,
-              fit: FlexFit.loose,
-              child: AacGridView(
-                aac: aac,
-                categoryIndex: _categoryIndex,
-                speak: _speak,
-                setCurrentImageIndex: setCurrentImageIndex,
-                currentImageIndex: currentImageIndex,
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: CategoryView(
-                  aac: aac,
-                  setCategory: setCategory,
-                  setCurrentImageIndex: setCurrentImageIndex,
-                  categoryIndex: _categoryIndex),
-            ),
-          ],
-        ),
+      child: PageView(
+        children: pages,
+
       ),
     );
   }
