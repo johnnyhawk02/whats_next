@@ -67,27 +67,38 @@ class _MyHomePageState extends State<MyHomePage> {
     return Material(
       child: Container(
         color: Colors.black,
-        child: SingleChildScrollView(
-          child: Column(
-
-            children: <Widget>[
-              ImageView(
+        child: Flex(
+          direction: Axis.vertical,
+          children: <Widget>[
+            Flexible(
+              flex: 7,
+              fit: FlexFit.loose,
+              child: ImageView(
                 currentImageIndex: currentImageIndex,
                 categoryIndex: _categoryIndex,
                 aac: aac,
               ),
-              AacGridView(
+            ),
+            Flexible(
+              flex: 4,
+              fit: FlexFit.loose,
+              child: AacGridView(
                 aac: aac,
                 categoryIndex: _categoryIndex,
                 speak: _speak,
                 setCurrentImageIndex: setCurrentImageIndex,
+                currentImageIndex: currentImageIndex,
               ),
-//              CategoryView(
-//                  aac: aac,
-//                  setCategory: setCategory,
-//                  categoryIndex: _categoryIndex),
-            ],
-          ),
+            ),
+            Flexible(
+              flex: 1,
+              child: CategoryView(
+                  aac: aac,
+                  setCategory: setCategory,
+                  setCurrentImageIndex: setCurrentImageIndex,
+                  categoryIndex: _categoryIndex),
+            ),
+          ],
         ),
       ),
     );

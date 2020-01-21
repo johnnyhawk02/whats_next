@@ -84,8 +84,8 @@ class _AacGridViewState extends State<AacGridView> {
     }
 
     return Container(
-      height: MediaQuery.of(context).size.height, // - 100,
-      color: Colors.black87,
+      height: MediaQuery.of(context).size.height-200, // - 100,
+      color: Colors.black,
       child: GridView.count(
         crossAxisCount: 3,
         childAspectRatio: 6 / 6,
@@ -116,9 +116,8 @@ class _AacGridViewState extends State<AacGridView> {
                   ),
                   Align(
                       alignment: Alignment.bottomCenter,
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 2000),
-                        height: widget.currentImageIndex == index ? 240 : 0,
+                      child: Container(
+                        height: 60,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -132,8 +131,12 @@ class _AacGridViewState extends State<AacGridView> {
                         ),
                         //color: Color.fromRGBO(0, 0, 0, 0.3),
                       )),
+                  Container(
+                    height: 300,
+                    color: Color.fromRGBO(0, 0, 0, widget.currentImageIndex==index?0.0:0.5),
+                  ),
                   Positioned.fill(
-                    bottom: 0,
+                    bottom: 8,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
                       child: Align(
@@ -143,7 +146,7 @@ class _AacGridViewState extends State<AacGridView> {
                           style: GoogleFonts.didactGothic(
                             color: Colors.white,
                             textStyle: Theme.of(context).textTheme.body1,
-                            fontSize: 14,
+                            fontSize: 10,
                           ),
                           maxLines: 1,
                         ),
@@ -153,7 +156,10 @@ class _AacGridViewState extends State<AacGridView> {
                   Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {
+                      splashColor: Colors.black,
+                      highlightColor: Colors.black,
+                      onLongPress: () {
+
                         widget.speak(myList[index].displayName);
                         widget.setCurrentImageIndex(index);
 
