@@ -62,28 +62,37 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     //Aac aac = Aac();
+
     SystemChrome.setEnabledSystemUIOverlays([]);
     final pages = List<Widget>.generate(
-      4,
-          (i) {
+      aac.categories.length,
+      (i) {
+        List myList = aac.buttonsInCategory(i);
         return Container(
           color: Colors.black,
           child: Flex(
             direction: Axis.vertical,
             children: <Widget>[
               Flexible(
-                flex: 7,
+                flex: 180,
                 fit: FlexFit.loose,
                 child: ImageView(
+                  myList: myList,
                   currentImageIndex: currentImageIndex,
+                  speak: _speak,
                   categoryIndex: i,
                   aac: aac,
                 ),
               ),
+//              Flexible(
+//                flex: 1,
+//                child:Container(),
+//              ),
               Flexible(
-                flex: 4,
+                flex: 80,
                 fit: FlexFit.loose,
                 child: AacGridView(
+                  myList: myList,
                   aac: aac,
                   categoryIndex: i,
                   speak: _speak,
@@ -92,23 +101,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 //              Flexible(
-//                flex: 1,
+//                flex: 30,
 //                child: CategoryView(
 //                    aac: aac,
 //                    setCategory: setCategory,
 //                    setCurrentImageIndex: setCurrentImageIndex,
-//                    categoryIndex: _categoryIndex),
+//                    categoryIndex: i),
 //              ),
             ],
           ),
         );
-          },
+      },
     );
 
     return Material(
       child: PageView(
         children: pages,
-
+        onPageChanged: (num) {
+          print("Current page number is " + num.toString());
+        },
       ),
     );
   }

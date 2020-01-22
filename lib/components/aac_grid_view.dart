@@ -9,7 +9,10 @@ class AacGridView extends StatefulWidget {
       this.speak,
       this.categoryIndex,
       this.currentImageIndex,
-      this.setCurrentImageIndex});
+      this.setCurrentImageIndex,
+      this.myList});
+  final myList;
+
   final aac;
   final speak;
   final categoryIndex;
@@ -22,10 +25,10 @@ class AacGridView extends StatefulWidget {
 class _AacGridViewState extends State<AacGridView> {
   @override
   Widget build(BuildContext context) {
-    List myList = widget.aac.buttonsInCategory(widget.categoryIndex);
+    //List myList = widget.aac.buttonsInCategory(widget.categoryIndex);
 
     void _showDialog(index) {
-      widget.speak(myList[index].displayName);
+      widget.speak(widget.myList[index].displayName);
 
       Navigator.of(context).push(
         new MaterialPageRoute<Null>(
@@ -36,7 +39,7 @@ class _AacGridViewState extends State<AacGridView> {
                   child: Stack(
                     children: [
                       Image.asset(
-                        myList[index].symbolPath,
+                        widget.myList[index].symbolPath,
                         //fit: BoxFit.fitHeight,
                       ),
                       Align(
@@ -63,7 +66,7 @@ class _AacGridViewState extends State<AacGridView> {
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: AutoSizeText(
-                              myList[index].displayName,
+                              widget.myList[index].displayName,
                               style: GoogleFonts.didactGothic(
                                 color: Colors.white,
                                 textStyle: Theme.of(context).textTheme.body1,
@@ -83,95 +86,41 @@ class _AacGridViewState extends State<AacGridView> {
       );
     }
 
-    return Container(
-      height: MediaQuery.of(context).size.height-200, // - 100,
-      color: Colors.black,
-      child: GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 6 / 6,
-        children: List.generate(myList.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Container(
+        //height: MediaQuery.of(context).size.height-200, // - 100,
+        color: Colors.black,
+        child: GridView.count(
+          // scrollDirection: Axis.horizontal,
+          crossAxisCount: 1,
+          childAspectRatio: 8/ 1,
+          children: List.generate(widget.myList.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 4000),
+                child: FlatButton(
+                  color: index==widget.currentImageIndex?Colors.grey[700]:Colors.grey[900],
+                  onLongPress: () {
+                    setState(() {
+                      widget.speak(widget.myList[index].displayName);
+                      widget.setCurrentImageIndex(index);
+                    });
 
-              //padding: const EdgeInsets.all(8.0),
-              child: Stack(
-//            onTap: () => widget.speak(myList[index].displayName),
-                children: [
-//                  Container(
-//                    color: Colors.blue,
-//                  ),
-                  Container(
-                    child: AspectRatio(
-                      aspectRatio: 1 / 1,
-                      child: Image.asset(
-                        myList[index].symbolPath,
-                        fit: BoxFit.cover,
-                        //color: Colors.red,
-
-                        //height: MediaQuery.of(context).size.height / 5,
-                      ),
+                  },
+                  child: new Text(
+                    widget.myList[index].displayName,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
                     ),
                   ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              const Color.fromRGBO(0, 0, 0, 0.0),
-                              const Color.fromRGBO(0, 0, 0, 0.9)
-                            ],
-                            // tileMode: TileMode.repeated,
-                          ),
-                        ),
-                        //color: Color.fromRGBO(0, 0, 0, 0.3),
-                      )),
-                  Container(
-                    height: 300,
-                    color: Color.fromRGBO(0, 0, 0, widget.currentImageIndex==index?0.0:0.5),
-                  ),
-                  Positioned.fill(
-                    bottom: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: AutoSizeText(
-                          myList[index].displayName,
-                          style: GoogleFonts.didactGothic(
-                            color: Colors.white,
-                            textStyle: Theme.of(context).textTheme.body1,
-                            fontSize: 10,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      splashColor: Colors.black,
-                      highlightColor: Colors.black,
-                      onLongPress: () {
-
-                        widget.speak(myList[index].displayName);
-                        widget.setCurrentImageIndex(index);
-
-                        //_showDialog(index);
-                      },
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
